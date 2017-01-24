@@ -1,4 +1,6 @@
 // pages/game/game.js
+import { sendMessage } from '../../utils/ws.js'
+import { uuid } from '../../utils/uuid.js'
 let app = getApp();
 
 Page({
@@ -16,6 +18,10 @@ Page({
         systemInfo: systemInfo
       })
     })
+
+    // sendMessage({
+    //   JOINGAME: uuid.v4()
+    // })
   },
   onReady:function(){
     const DENSITY = 10;
@@ -91,7 +97,8 @@ Page({
       boxArrayAsRow[yIndex][xIndex] = player;
       boxArrayAsCol[xIndex][yIndex] = player;
 
-      // this.setData({ player: player === 1 ? 2 : 1 });
+      this.setData({ player: player === 1 ? 2 : 1 });
+      // sendMessage({x, y})
     }
 
     this.checkResult();
@@ -147,7 +154,7 @@ Page({
         let tempArr = [], tempStr;
         for(let j=arr.length-1; j>arr[0].length-1-i; j--) {
           // tempArr.push(arr[j][arr.length-j-1+i]);
-          console.log(arr.length-j+","+j)
+          // console.log(arr.length-j+","+j)
           tempArr.push(arr[j][arr.length-j])
         }
         tempStr = tempArr.join("");

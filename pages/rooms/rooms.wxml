@@ -1,0 +1,2 @@
+<!--pages/rooms/rooms.wxml-->
+<view bindtap="onPress">123</view>
