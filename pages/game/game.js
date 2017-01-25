@@ -5,12 +5,12 @@ let app = getApp();
 
 Page({
   data:{
-    player: 1,
-    rs: false
+    player: 1
   },
   ctx: null,
   onLoad:function(options){
     let that = this;
+
     // 页面初始化 options为页面跳转所带来的参数
     app.getSystemInfo(function(systemInfo){
       //更新数据
@@ -74,16 +74,13 @@ Page({
     let ctx = this.ctx;
 
     // compute the circle
-    let { player, boxWidth, boxHeight, left, top, pieceSize, boxArrayAsRow, boxArrayAsCol } = this.data;
+    let { player, left, top, pieceSize, boxArrayAsRow, boxArrayAsCol } = this.data;
 
     let xIndex = Math.round((x-left)/pieceSize),
         yIndex = Math.round((y-top)/pieceSize),
         cX = xIndex * pieceSize + left,
         cY = yIndex * pieceSize + top;
 
-    // console.log(boxArrayAsRow)
-    // console.log(yIndex)
-    // console.log(xIndex)
     if(boxArrayAsRow[yIndex][xIndex] === 0) {
       ctx.setStrokeStyle('black');
       ctx.setFillStyle(player === 1 ? 'white' : 'black');
@@ -101,75 +98,68 @@ Page({
       // sendMessage({x, y})
     }
 
-    this.checkResult();
+    this.checkResult({x: xIndex, y: yIndex});
   },
-  checkResult: function() {
+
+  showResult: function(rs) {
+    wx.showToast({
+      title: rs ? 'You Win' : 'You Lose',
+      icon: 'success',
+      duration: 2000
+    })
+
+    this.setData({ rs });
+  },
+
+  checkResult: function({x, y}) {
     let that = this;
-    let { boxArrayAsRow, boxArrayAsCol } = this.data;
-    let rs = false;
+    let { boxArrayAsRow, rs } = this.data;
+    let value = boxArrayAsRow[y][x];
 
-    function _celebrate() {
-      wx.showToast({
-        title: 'You Win',
-        icon: 'success',
-        duration: 2000
-      })
+    _checkWin([1, 0]);
+    _checkWin([0, 1]);
+    _checkWin([1, 1]);
 
-      that.setData({
-        rs: true
-      });
-    }
+    function _checkWin([switchX, switchY]) {
+      if(rs !== undefined) return;
 
-    function _checkStraight(arr) {
-      if(rs) return;
+      let x1 = x, y1 = y, count = 1;
 
-      for(let i=0; i<arr.length; i++) {
-        let tempStr = arr[i].join("");
-        if(tempStr.indexOf("11111") > -1 || tempStr.indexOf("22222") > -1) {
-          _celebrate();
-          rs = true;
+      while(true) {
+        if(count >= 5) {
+          that.showResult(true);
+          break;
+        }
+
+        x1 += switchX;
+        y1 -= switchY;
+
+        if(boxArrayAsRow[y1][x1] === value) {
+          count ++;
+
+        } else {
+          let x2 = x, y2 = y;
+
+          while(true) {
+            if(count >= 5) {
+              that.showResult(true);
+              break;
+            }
+
+            x2 -= switchX;
+            y2 += switchY;
+
+            if(boxArrayAsRow[y2][x2] === value) {
+              count ++;
+
+            } else {
+              break;
+            }
+          }
           break;
         }
       }
+
     }
-
-    function _checkOblique(arr) {
-      if(rs) return;
-
-      for(let i=4; i<arr.length; i++) {
-        let tempArr = [], tempStr;
-        for(let j=0; j<=i; j++) {
-          tempArr.push(arr[i-j][j]);
-        }
-        tempStr = tempArr.join("");
-        if(tempStr.indexOf("11111") > -1 || tempStr.indexOf("22222") > -1) {
-          _celebrate();
-          rs = true;
-          break;
-        }
-      }
-
-      if(rs) return;
-      for(let i=1; i<arr[0].length; i++) {
-        let tempArr = [], tempStr;
-        for(let j=arr.length-1; j>arr[0].length-1-i; j--) {
-          // tempArr.push(arr[j][arr.length-j-1+i]);
-          // console.log(arr.length-j+","+j)
-          tempArr.push(arr[j][arr.length-j])
-        }
-        tempStr = tempArr.join("");
-        // console.log(tempArr)
-        
-        if(tempStr.indexOf("11111") > -1 || tempStr.indexOf("22222") > -1) {
-          _celebrate();
-          rs = true;
-          break;
-        }
-      }
-    }
-
-    _checkStraight(boxArrayAsRow);
-    _checkStraight(boxArrayAsCol);
-    _checkOblique(boxArrayAsRow);
   }
 })
