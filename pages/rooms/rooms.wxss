@@ -1,1 +1,57 @@
 /* pages/rooms/rooms.wxss */
+.roomList {
+    padding: 20rpx;
+    flex-flow: row wrap;
+    display: flex;
+}
+
+.room {
+    position: relative;
+    width: 22%;
+    margin: 10px;
+    border-radius: 15rpx;
+    box-shadow: 2px 2px 10px #000;
+    color: #fff;
+    background: #0f940f;
+    padding: 30px 10px 10px;
+    height: 180rpx;
+    overflow: hidden;
+}
+
+.room-inactive {
+    background: #f00;
+    padding: 30px 10px 10px;
+    height: 180rpx;
+}
+
+text {
+    word-break: break-all;
+    font-size: 24rpx;
+}
+
+.roomCorner {
+    position: absolute;
+    left: -50rpx;
+    top: -50rpx;
+    width: 100rpx;
+    height: 100rpx;
+    background: #fff;
+    color: #000;
+    transform: rotate(45deg);
+}
+
+.roomNumber{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    transform: rotate(-45deg) translate(18rpx, -28rpx);
+}
+
+.roomPlayers {
+    text-align: center;
+}
+
+.labelVS{
+    display: block;
+    margin: 10rpx 0;
+}

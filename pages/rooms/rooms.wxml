@@ -1,2 +1,15 @@
 <!--pages/rooms/rooms.wxml-->
-<view bindtap="onPress">123</view>
+<view class="roomList">
+    <view bindtap="joinRoom" wx:for="{{rooms}}" wx:for-item="room" wx:key="{{room.key}}" data-roomid="{{room.key}}" class="{{room.value.length ==1 ? 'room' : 'room room-inactive'}}">
+        <view>
+            <view class="roomCorner">
+                <text class="roomNumber">{{index+1}}</text>
+            </view>
+            <view class="roomPlayers">
+                <text>{{room.value[0]}}</text>
+                <text class="labelVS">vs</text>
+                <text>{{room.value[1]}}</text>
+            </view>
+        </view>
+    </view>
+</view>

@@ -4,9 +4,16 @@ import { sendMessage, onMessage } from '../../utils/ws.js'
 Page({
   data:{},
   onLoad:function(options){
+    let that = this;
+    sendMessage({ message: "LISTROOMS" });
+
     onMessage("LISTROOMS", function(message, data) {
-      console.log(data);
+      that.setData({
+        rooms: Object.keys(data).map((key) => ({key, value: data[key]}))
+      })
     });
+
+    // console.log(that.data['rooms'])
   },
   onReady:function(){
     // 页面渲染完成
@@ -20,9 +27,10 @@ Page({
   onUnload:function(){
     // 页面关闭
   },
-  onPress: function() {
-    sendMessage({
-      message: "LISTROOMS"
-    });
+  joinRoom: function(e) {
+    let roomId = e.currentTarget.dataset.roomid;
+    wx.navigateTo({
+      url: `../game/game?roomid=${roomId}`
+    })
   }
 })

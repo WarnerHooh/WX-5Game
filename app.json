@@ -1,5 +1,6 @@
 {
   "pages":[
+    "pages/rooms/rooms",
     "pages/game/game",
     "pages/index/index",
     "pages/logs/logs"

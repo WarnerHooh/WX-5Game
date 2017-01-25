@@ -19,7 +19,6 @@ wx.onSocketOpen(function(res) {
 wx.onSocketMessage(function({data}) {
   if(data) {
       let res = JSON.parse(data);
-      console.log(res)
       res.message && PubSub.publish(res.message, res.data)
   }
 })
