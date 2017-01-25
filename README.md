@@ -1,7 +1,7 @@
 # WX-5Game
 
-#npm install
+> npm install
 
-#node server/index.js
+> node server/index.js
 
-#run in WX Devtool
+> run in WX Devtool
